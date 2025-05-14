@@ -42,5 +42,5 @@ Ce projet est une application web pour un restaurant permettant aux clients de s
 1. **Cloner le dépôt :**
 
    ```bash
-   git clone https://github.com/votre-utilisateur/restaurant-web-app.git](https://github.com/LionelBatt/Projet_Resto.git
+   git clone https://github.com/LionelBatt/Projet_Resto.git
    
