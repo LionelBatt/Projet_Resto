@@ -2,9 +2,9 @@ name: Java CI with Maven and AWS
 
 on:
   push:
-    branches: [ prod-env ]
+    branches: [ test-CI/CD ]
   pull_request:
-    branches: [ prod-env ]
+    branches: [ test-CI/CD ]
 
 jobs:
   build:
@@ -29,6 +29,24 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-artifact
+        path: target/*.war
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Download build artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: build-artifact
+
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -37,7 +55,6 @@ jobs:
         aws-region: eu-west-3
 
     - name: Deploy to Elastic Beanstalk
-      if: success()
       run: |
         aws elasticbeanstalk create-application-version \
           --application-name projet-restaurant \
